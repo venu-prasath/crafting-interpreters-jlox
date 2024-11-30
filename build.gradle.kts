@@ -1,5 +1,5 @@
 plugins {
-    id("application")
+    id("java")
 }
 
 group = "com.craftinginterpreters.lox"
@@ -18,12 +18,11 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.register<JavaExec>("runLox") {
+tasks.register<JavaExec>("buildLox") {
     group = "application"
-    description = "Runs the Lox interpreter"
+    description = "build the Lox interpreter"
 
     mainClass.set("com.craftinginterpreters.lox.Lox")
-    //classpath = sourceSets["main"].runtimeClasspath
     classpath = sourceSets["main"].runtimeClasspath
 
     doFirst {
@@ -33,4 +32,28 @@ tasks.register<JavaExec>("runLox") {
     doLast {
         println("Lox interpreter finished")
     }
+}
+
+tasks.jar {
+    archiveBaseName.set("jlox")
+    archiveVersion.set("1.0-SNAPSHOT")
+
+    manifest {
+        attributes["Main-Class"] = "com.craftinginterpreters.lox.Lox"
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it)})
+}
+
+tasks.classes {
+    finalizedBy(tasks.jar)
+}
+
+tasks.register<JavaExec>("launchJar") {
+    dependsOn("buildLox")
+    group = "application"
+    description = "Runs the Lox interpreter"
+
+    mainClass.set("com.craftinginterpreters.lox.Lox")
+    classpath = files("${layout.buildDirectory}/libs/jlox-1.0-SNAPSHOT.jar")
+
 }
