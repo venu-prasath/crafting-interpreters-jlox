@@ -52,3 +52,6 @@ operator       → "==" | "!=" | "<" | "<=" | ">" | ">="
 
 
 ### 3. Parsing Expressions
+The chapter introduced the concept of parsing expressions as a key milestone in programming, moving beyond ad hoc solutions like regular expressions and substring operations. It emphasizes the value of writing a robust parser capable of handling errors, maintaining structure, and processing complex syntax effectively.
+
+The chapter highlighted that parsing—converting a sequence of tokens into a syntax tree—is more approachable than it seems, especially with the groundwork laid in previous chapters. It encourages readers to focus on practical implementation without getting lost in the complex history or unnecessary details of older techniques.
