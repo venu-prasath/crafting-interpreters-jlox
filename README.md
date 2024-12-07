@@ -55,3 +55,15 @@ operator       → "==" | "!=" | "<" | "<=" | ">" | ">="
 The chapter introduced the concept of parsing expressions as a key milestone in programming, moving beyond ad hoc solutions like regular expressions and substring operations. It emphasizes the value of writing a robust parser capable of handling errors, maintaining structure, and processing complex syntax effectively.
 
 The chapter highlighted that parsing—converting a sequence of tokens into a syntax tree—is more approachable than it seems, especially with the groundwork laid in previous chapters. It encourages readers to focus on practical implementation without getting lost in the complex history or unnecessary details of older techniques.
+
+
+#### 4. Evaluating Expressions
+The chapter "Evaluating Expressions" from Crafting Interpreters focuses on implementing the evaluation phase of expressions in a tree-walk interpreter. 
+
+**Expressions as Trees:** Expressions are represented as Abstract Syntax Trees (ASTs). Each node corresponds to a part of the expression, like literals, unary operators, or binary operators.
+
+**Evaluation Mechanism:** The evaluation of an expression traverses the AST recursively:
+
+**Literal Expressions:** Directly return their values.
+**Unary Expressions:** Compute the operand's value, then apply the operator.
+**Binary Expressions:** Compute both operands' values and then apply the operator, respecting type constraints.

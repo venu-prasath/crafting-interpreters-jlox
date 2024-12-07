@@ -1,5 +1,4 @@
 plugins {
-    java
     application
 }
 
@@ -31,6 +30,11 @@ java {
 
 application {
     mainClass.set(appMainClass)
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+    standardOutput = System.out
 }
 
 tasks.named<Jar>("jar") {
