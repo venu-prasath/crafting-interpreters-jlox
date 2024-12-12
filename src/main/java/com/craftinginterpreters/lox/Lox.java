@@ -15,7 +15,6 @@ public class Lox {
     static boolean hadRuntimeError = false;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Starting main");
         System.out.println(args.length);
         if (args.length > 1) {
             System.out.println("Usage: jlox [script]");
@@ -37,7 +36,6 @@ public class Lox {
     }
 
     private static void runPrompt() throws IOException {
-        System.out.println("runPrompt executed");
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
