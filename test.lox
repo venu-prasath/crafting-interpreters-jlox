@@ -1,0 +1,6 @@
+print "one";
+print true;
+print 2 + 1;
+var a = 3;
+var b = 4;
+print a+b;

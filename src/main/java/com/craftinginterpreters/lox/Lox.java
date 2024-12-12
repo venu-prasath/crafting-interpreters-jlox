@@ -15,7 +15,6 @@ public class Lox {
     static boolean hadRuntimeError = false;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Starting main");
         System.out.println(args.length);
         if (args.length > 1) {
             System.out.println("Usage: jlox [script]");
@@ -37,7 +36,6 @@ public class Lox {
     }
 
     private static void runPrompt() throws IOException {
-        System.out.println("runPrompt executed");
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
@@ -55,18 +53,16 @@ public class Lox {
         List<Token> tokens = scanner.scanTokens();
 
         Parser parser = new Parser(tokens);
-        Expr expression = parser.parse();
+        List<Stmt> stmts = parser.parse();
 
         if(hadError) return;
 
-        interpreter.interpret(expression);
+        Resolver resolver = new Resolver(interpreter);
+        resolver.resolve(stmts);
 
-        //System.out.println(new AstPrinter().print(expression));
+        if(hadError) return;
 
-        // For now, just print the tokens.
-//        for(Token token: tokens) {
-//            System.out.println(token);
-//        }
+        interpreter.interpret(stmts);
     }
 
     static void runtimeError(RuntimeError error) {
