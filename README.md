@@ -1,69 +1,77 @@
-## Crafting Interpreters
+# Crafting Interpreters - Tree-Walk Interpreter
 
-This is my notes and sample code to build an interpreter and compiler from scratch inspired by the book "Crafting Interpreters" writter by "Robert Nystrom"
+This repository contains the implementation of the Tree-Walk Interpreter, as described in Part II of *Crafting Interpreters* by Robert Nystrom. The book provides a comprehensive guide to designing and implementing interpreters for programming languages, starting from basic principles and gradually advancing to more sophisticated techniques.
 
-Part 1 of the book builds a Tree-Walk interpreter using Java for a language called "Lox". 
-It also discusses the basic building blocks that make up an interpreter/compiler. 
-The basic structure or steps that takes to build this is beautifully explained by this diagram below:
+## About the Book
 
-![Bird's eye view](./public/interpreters.jpeg)
+*Crafting Interpreters* is a two-part journey into the world of language design and implementation:
 
-### 1. Scanning
-The first step in any compiler or interpreter is scanning. The scanner takes in raw source code as a series of characters and groups it into a series of chunks we call tokens. These are the meaningful “words” and “punctuation” that make up the language’s grammar.
+1. **Part I** focuses on building a simple interpreter in Java, providing readers with a foundational understanding of parsing, syntax trees, and evaluation.
+2. **Part II** (covered in this repository) dives deeper into creating a fully-featured Tree-Walk Interpreter using a hand-crafted lexer and parser, culminating in an implementation of a dynamically-typed programming language, Lox.
 
-This task has been variously called “scanning” and “lexing” (short for “lexical analysis”) over the years. Way back when computers were as big as Winnebagos but had less memory than your watch, some people used “scanner” only to refer to the piece of code that dealt with reading raw source code characters from disk and buffering them in memory. Then “lexing” was the subsequent phase that did useful stuff with the characters.
+This repository is dedicated to the Tree-Walk Interpreter, showcasing the implementation of Lox in Java.
 
-These days, reading a source file into memory is trivial, so it’s rarely a distinct phase in the compiler. Because of that, the two terms are basically interchangeable.
+## Features of the Tree-Walk Interpreter
 
-Scanning is a good starting point for us too because the code isn’t very hard—pretty much a switch statement with delusions of grandeur. It will help us warm up before we tackle some of the more interesting material later. By the end of this chapter, we’ll have a full-featured, fast scanner that can take any string of Lox source code and produce the tokens that we’ll feed into the parser in the next chapter.
+- **Handwritten Lexer and Parser**: Implements a recursive descent parser for generating the abstract syntax tree (AST).
+- **Dynamic Typing**: Supports various data types, including strings, numbers, booleans, and `nil`.
+- **Control Flow**: Includes conditionals (`if`), loops (`while`, `for`), and block scoping.
+- **Functions and Closures**: Implements first-class functions and lexical scoping.
+- **Error Handling**: Provides detailed error messages for runtime and syntax errors.
 
-### 2. Representing Code
-The next step is to transform these tokens into a richer, structured representation—commonly a syntax tree.
+## Directory Structure
 
-Code as a Tree:
+- `src`: Contains the implementation of the Tree-Walk Interpreter.
+    - `scanner` Code for tokenizing the input source code.
+    - `parser`: Code for generating the AST.
+    - `interpreter`: Code for evaluating the AST.
+    - `ast`: Definitions of AST nodes.
+    - `main`: Entry point of the interpreter.
 
-A tree structure naturally represents code, capturing its grammatical structure and operator precedence. For example, evaluating 1 + 2 * 3 - 4 requires understanding operator precedence, visualized as a tree where leaves are numbers and interior nodes are operators.
-Tree traversal (post-order) enables evaluation, starting from the leaves and working toward the root.
-Alternative Representations:
+## How to Run
 
-While trees are intuitive, other representations like bytecode are more machine-oriented and less human-readable.
-Context-Free Grammars (CFGs):
+1. Clone this repository:
 
-To define this structured representation, context-free grammars (CFGs) are used, offering more power than regular grammars (used for tokenization) to handle nested expressions.
-CFGs define rules to group tokens into syntactic structures, enabling the parser to understand the deeper, hierarchical relationships in the code.
-The chapter integrates formal grammar theory, programming paradigms (functional vs. object-oriented), design patterns, and metaprogramming while building toward a structured code representation. This groundwork prepares for writing parsers and interpreters.
-Using our handy dandy new notation, here’s a grammar for those:
+   ```bash
+   git clone https://github.com/venu-prasath/crafting-interpreters-jlox
+   cd crafting-interpreters-jlox
+   ```
 
-expression     → literal
-| unary
-| binary
-| grouping ;
+2. Compile the Java code:
 
-literal        → NUMBER | STRING | "true" | "false" | "nil" ;
+   ```bash
+   ./gradlew clean build jar 
+   ```
 
-grouping       → "(" expression ")" ;
+3. Run the interpreter:
 
-unary          → ( "-" | "!" ) expression ;
+   ```bash
+   java -jar build/libs/jlox-1.0-SNAPSHOT.jar
+   ```
 
-binary         → expression operator expression ;
+4. Input your Lox program to execute it.
 
-operator       → "==" | "!=" | "<" | "<=" | ">" | ">="
-| "+"  | "-"  | "*" | "/" ;
+## Example Lox Program
+
+```lox
+fun greet(name) {
+  print "Hello, " + name + "!";
+}
+
+greet("World");
+```
+
+## Contributions
+
+This implementation closely follows the structure and approach described in the book. Contributions are welcome for enhancements, bug fixes, or new features while staying true to the principles outlined in *Crafting Interpreters*.
+
+## Resources
+
+- Official website for *Crafting Interpreters*: [craftinginterpreters.com](https://craftinginterpreters.com/)
+- Author: Robert Nystrom
+
+## License
+
+This project is open-sourced under the MIT License. See the `LICENSE` file for details.
 
 
-### 3. Parsing Expressions
-The chapter introduced the concept of parsing expressions as a key milestone in programming, moving beyond ad hoc solutions like regular expressions and substring operations. It emphasizes the value of writing a robust parser capable of handling errors, maintaining structure, and processing complex syntax effectively.
-
-The chapter highlighted that parsing—converting a sequence of tokens into a syntax tree—is more approachable than it seems, especially with the groundwork laid in previous chapters. It encourages readers to focus on practical implementation without getting lost in the complex history or unnecessary details of older techniques.
-
-
-#### 4. Evaluating Expressions
-The chapter "Evaluating Expressions" from Crafting Interpreters focuses on implementing the evaluation phase of expressions in a tree-walk interpreter. 
-
-**Expressions as Trees:** Expressions are represented as Abstract Syntax Trees (ASTs). Each node corresponds to a part of the expression, like literals, unary operators, or binary operators.
-
-**Evaluation Mechanism:** The evaluation of an expression traverses the AST recursively:
-
-**Literal Expressions:** Directly return their values.
-**Unary Expressions:** Compute the operand's value, then apply the operator.
-**Binary Expressions:** Compute both operands' values and then apply the operator, respecting type constraints.
